@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gửi tặng công chúa của anh ❤️ 20/10</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: radial-gradient(circle at center, #1b0c26 0%, #06020c 100%);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #heart-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+    }
+
+    .screen {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      height: 100%;
+    }
+    .hidden {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: scale(0.85);
+    }
+
+    .glass-box {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(255, 133, 161, 0.4);
+      padding: 40px 30px;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(255, 75, 110, 0.35);
+      max-width: 90%;
+      width: 400px;
+    }
+    .glass-box h2 { font-size: 26px; color: #ff85a2; }
+    input[type="password"] {
+      width: 85%;
+      padding: 14px 20px;
+      border-radius: 30px;
+      border: 2px solid #ff758c;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 18px;
+      text-align: center;
+      margin: 20px 0;
+      outline: none;
+      letter-spacing: 2px;
+    }
+    button {
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 17px;
+      box-shadow: 0 8px 25px rgba(255, 65, 108, 0.5);
+      transition: all 0.3s;
+    }
+    button:hover { transform: scale(1.08); }
+
+    .gift-container {
+      cursor: pointer;
+      text-align: center;
+      user-select: none;
+    }
+    .gift-box {
+      font-size: 130px;
+      animation: giftBounce 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 35px rgba(255, 105, 180, 0.8));
+      display: inline-block;
+    }
+    @keyframes giftBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-25px) scale(1.08) rotate(3deg); }
+    }
+    .gift-title {
+      font-size: 34px;
+      font-weight: 700;
+      color: #ff9ebb;
+      margin-top: 25px;
+      text-shadow: 0 0 20px rgba(255, 133, 162, 0.8);
+    }
+    .gift-sub {
+      color: #ffd1dc;
+      margin-top: 15px;
+      font-size: 20px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    #photo-stage {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .photo-card {
+      position: absolute;
+      width: 260px;
+      height: 350px;
+      border-radius: 18px;
+      background-size: cover;
+      background-position: center;
+      background-color: #2b1130;
+      border: 3.5px solid #fff;
+      box-shadow: 0 0 30px rgba(255, 80, 120, 0.9), 0 15px 35px rgba(0,0,0,0.7);
+      transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.2);
+    }
+
+    #center-hero-photo {
+      position: absolute;
+      top: 48%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 220px;
+      height: 290px;
+      border-radius: 20px;
+      background-size: cover;
+      background-position: center;
+      border: 4px solid #ff758c;
+      box-shadow: 0 0 45px #ff2a6d, 0 0 80px rgba(255, 117, 140, 0.8);
+      z-index: 4;
+      transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0;
+    }
+
+    .letter-card {
+      background: linear-gradient(135deg, #fffefc 0%, #fff0f5 100%);
+      color: #333;
+      padding: 38px 32px;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(255, 105, 180, 0.6);
+      position: relative;
+      border: 3px dashed #ff8fa3;
+      max-height: 85vh;
+      overflow-y: auto;
+      z-index: 30;
+      animation: openLetter 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    }
+    @keyframes openLetter {
+      0% { transform: scale(0.2) rotate(-10deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .letter-header {
+      font-size: 24px;
+      color: #d81b60;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-align: center;
+      border-bottom: 2px solid #ffd1dc;
+      padding-bottom: 12px;
+    }
+    .letter-body {
+      font-size: 16px;
+      line-height: 2;
+      color: #3a3a3a;
+      white-space: pre-line;
+      text-align: justify;
+    }
+    .letter-footer {
+      margin-top: 25px;
+      text-align: right;
+      font-weight: bold;
+      color: #e91e63;
+      font-size: 17px;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="heart-canvas"></canvas>
+  <audio id="bgm" src="Yêu Em Rất Nhiều.mp3" preload="auto" loop></audio>
+
+  <!-- 1. MẬT KHẨU -->
+  <div id="screen-pwd" class="screen">
+    <div class="glass-box">
+      <h2>🔐 Khu Vực Bí Mật</h2>
+      <p style="margin-top: 10px; font-size: 15px; color: #ffb8d2;">Mời nàng nhập mật mã để vào trong</p>
+      <input type="password" id="pwd-input" placeholder="••••••" autofocus>
+      <br>
+      <button onclick="checkPassword()">Mở Khóa ❤️</button>
+      <p id="pwd-error" style="color: #ff4757; font-size: 14px; margin-top: 12px; display: none;">Mật khẩu chưa đúng rồi bé ơi! Thử lại nha.</p>
+    </div>
+  </div>
+
+  <!-- 2. HỘP QUÀ -->
+  <div id="screen-gift" class="screen hidden">
+    <div class="gift-container" onclick="openGift()">
+      <div class="gift-box">🎁</div>
+      <div class="gift-title">Gửi tặng Công túa của Anh nhân ngày 20/10 💖</div>
+      <div class="gift-sub">Bé chạm vào hộp quà đi nào! ✨</div>
+    </div>
+  </div>
+
+  <div id="photo-stage"></div>
+  <div id="center-hero-photo"></div>
+
+  <!-- 3. LÁ THƯ TÌNH CẢM -->
+  <div id="screen-letter" class="screen hidden">
+    <div class="letter-card">
+      <div class="letter-header">💌 Chúc Mừng 20/10 Phụ Nữ Việt Nam 💌</div>
+      <div class="letter-body">
+Gửi em - Công túa của Anh!
+
+Chúc bé một ngày 20/10 tràn ngập niềm vui, luôn xinh tươi, rạng rỡ và hạnh phúc bên anh. Cảm ơn em đã luôn đồng hành, thấu hiểu và mang lại cho anh những điều ấm áp nhất.
+Anh vẫn sẽ luôn ở bên cạnh chở che, yêu thương và cưng chiều em. Anh yêu em nhiềuuuu! 
+Moahhhhh!❤️
+      </div>
+      <div class="letter-footer">
+      Hoàng tử của Em 💕
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========== CẤU HÌNH ========== */
+    const PASSWORD = "beancute"; // Mật khẩu của bạn
+
+    const photos = [
+      "anh12.jpg",
+      "14.jpg",
+      "1 (1).jpg",
+      "1 (6).jpg",
+      "13.jpg",
+      "1 (5).jpg",
+      "1 (8).jpg",
+      "1 (2).jpg",
+      "1 (9).jpg",
+      "1 (7).jpg"
+    ];
+    /* ============================== */
+
+    const music = document.getElementById("bgm");
+
+    function startMusic() {
+      if (music.paused) {
+        music.muted = false;
+        music.volume = 1.0;
+        music.play().catch(e => console.log("Chờ tương tác người dùng"));
+      }
+    }
+
+    function checkPassword() {
+      startMusic(); // Mở quyền phát nhạc ngay từ lần bấm mở khóa
+
+      if (document.getElementById("pwd-input").value === PASSWORD) {
+        document.getElementById("screen-pwd").classList.add("hidden");
+        setTimeout(() => {
+          document.getElementById("screen-gift").classList.remove("hidden");
+        }, 600);
+      } else {
+        document.getElementById("pwd-error").style.display = "block";
+      }
+    }
+
+    document.getElementById("pwd-input").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkPassword();
+    });
+
+    function openGift() {
+      startMusic(); // Bật nhạc tự động khi chạm mở hộp quà
+
+      document.getElementById("screen-gift").classList.add("hidden");
+      setTimeout(startSequence, 600);
+    }
+
+    // CANVAS TRÁI TIM ĐẦY ĐẶN
+    const canvas = document.getElementById("heart-canvas");
+    const ctx = canvas.getContext("2d");
+    let width, height;
+    let heartPoints = [];
+    let showBigHeart = false;
+    let beatTime = 0;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function initPlumpHeart() {
+      heartPoints = [];
+      const totalPoints = 460;
+      const scale = Math.min(width, height) / 36;
+      for (let i = 0; i < totalPoints; i++) {
+        const t = (i / totalPoints) * Math.PI * 2;
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = -(14 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t) - 0.5 * Math.cos(5*t));
+        
+        const layer = 0.92 + Math.random() * 0.16;
+        heartPoints.push({
+          targetX: width / 2 + x * scale * layer,
+          targetY: (height / 2 - 15) + y * scale * layer,
+          x: Math.random() * width,
+          y: Math.random() * height,
+          alpha: Math.random() * 0.8 + 0.2,
+          size: Math.random() * 3.5 + 2,
+          color: Math.random() > 0.3 ? '#ff3366' : '#ff99bb'
+        });
+      }
+    }
+    initPlumpHeart();
+
+    let stars = [];
+    for(let i=0; i<70; i++) {
+      stars.push({ x: Math.random()*width, y: Math.random()*height, r: Math.random()*2+1, s: Math.random()*0.4+0.2 });
+    }
+
+    function renderCanvas() {
+      ctx.clearRect(0, 0, width, height);
+
+      ctx.fillStyle = "rgba(255, 180, 210, 0.4)";
+      stars.forEach(s => {
+        s.y -= s.s;
+        if(s.y < 0) s.y = height;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fill();
+      });
+
+      if (showBigHeart) {
+        beatTime += 0.05;
+        const beat = 1 + 0.06 * Math.sin(beatTime * 3);
+
+        heartPoints.forEach(p => {
+          const dx = p.targetX - width / 2;
+          const dy = p.targetY - (height / 2 - 15);
+          const tx = width / 2 + dx * beat;
+          const ty = (height / 2 - 15) + dy * beat;
+
+          p.x += (tx - p.x) * 0.07;
+          p.y += (ty - p.y) * 0.07;
+
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        });
+      }
+      requestAnimationFrame(renderCanvas);
+    }
+    renderCanvas();
+
+    function startSequence() {
+      const stage = document.getElementById("photo-stage");
+      const elements = [];
+      const total = photos.length;
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // Khởi tạo các tấm ảnh ẩn ở vị trí hộp quà (dưới tâm một chút)
+      photos.forEach((src) => {
+        const card = document.createElement("div");
+        card.className = "photo-card";
+        card.style.backgroundImage = `url('${encodeURI(src)}')`;
+        card.style.left = `${cx}px`;
+        card.style.top = `${cy + 120}px`; // Nằm ẩn ở phía dưới hộp quà
+        card.style.opacity = "0";
+        card.style.transform = `translate(-50%, -50%) scale(0.1)`;
+        stage.appendChild(card);
+        elements.push(card);
+      });
+
+      const spacing = Math.min(100, (width * 0.9) / total);
+      const startX = cx - ((total - 1) * spacing) / 2;
+
+      let currentIndex = 0;
+      const DISPLAY_TIME = 3000; // 3 giây ngắm từng tấm ở giữa
+
+      function showNextCard() {
+        if (currentIndex < total) {
+          const card = elements[currentIndex];
+          const i = currentIndex;
+
+          // 1. Cho trễ nhẹ 50ms để kích hoạt transition bay từ dưới hộp quà vút lên tâm
+          setTimeout(() => {
+            card.style.opacity = "1";
+            card.style.top = `${cy}px`; // Bay vút lên chính diện
+            card.style.transform = `translate(-50%, -50%) scale(1.15)`;
+            card.style.zIndex = "10";
+          }, 50);
+
+          // 2. Sau 3 giây ngắm -> Trượt nhẹ nhàng sang trái xếp vào hàng
+          setTimeout(() => {
+            card.style.transform = `translate(-50%, -50%) scale(0.55)`;
+            card.style.left = `${startX + i * spacing}px`;
+            card.style.top = `${cy}px`;
+            card.style.zIndex = "5";
+
+            currentIndex++;
+            showNextCard();
+          }, DISPLAY_TIME);
+        } else {
+          // Sau khi cả 10 tấm đã xếp ngay ngắn -> Chờ 1.5s rồi xoay tròn và tạo trái tim
+          setTimeout(mergeAndTransformHeart, 1500);
+        }
+      }
+
+      // Bắt đầu chuỗi trình chiếu ảnh
+      showNextCard();
+
+      function mergeAndTransformHeart() {
+        const radius = Math.min(width, height) * 0.32;
+        elements.forEach((card, i) => {
+          const angle = (i / total) * Math.PI * 2;
+          card.style.left = `${cx + Math.cos(angle) * radius}px`;
+          card.style.top = `${cy + Math.sin(angle) * radius}px`;
+          card.style.transform = `translate(-50%, -50%) scale(0.6) rotate(${angle * 45}deg)`;
+        });
+
+        setTimeout(() => {
+          elements.forEach(card => {
+            card.style.left = `${cx}px`;
+            card.style.top = `${cy}px`;
+            card.style.transform = `translate(-50%, -50%) scale(0) rotate(360deg)`;
+            card.style.opacity = "0";
+          });
+
+          showBigHeart = true;
+
+          // Hiển thị ảnh ở tâm trái tim (ưu tiên ảnh chụp chung nếu có)
+          setTimeout(() => {
+            const hero = document.getElementById("center-hero-photo");
+            hero.style.backgroundImage = `url('15.jpg')`; 
+            hero.style.opacity = "1";
+            hero.style.transform = `translate(-50%, -50%) scale(1)`;
+          }, 600);
+
+          setTimeout(() => {
+            const hero = document.getElementById("center-hero-photo");
+            hero.style.opacity = "0";
+            hero.style.transform = `translate(-50%, -50%) scale(0.1)`;
+
+            canvas.style.opacity = "0";
+            showBigHeart = false;
+
+            setTimeout(() => {
+              document.getElementById("screen-letter").classList.remove("hidden");
+            }, 800);
+
+          }, 6500);
+
+        }, 2200);
+      }
+    }
+  </script>
+</body>
+</html>
